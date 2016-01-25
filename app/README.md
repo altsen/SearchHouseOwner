@@ -1,22 +1,11 @@
-# Python-getting-started
+# 房东直租
 
 一个简单的使用 Flask 的 Python 应用。
 可以运行在 LeanEngine Python 运行时环境。
 
-## 本地运行
-
-首先确认本机已经安装 [Python](http://python.org/)2.7 运行环境。然后执行下列指令：
-
+# 安装依赖
 ```
-$ git clone git@github.com:leancloud/python-getting-started.git
-$ cd python-getting-started
-```
-
-准备启动文件:
-
-```
-$ cp start.sh.example start.sh
-$ chmod +x start.sh
+pip install -Ur requirements.txt 
 ```
 
 将 app id 等信息更新到 `start.sh` 文件中：
