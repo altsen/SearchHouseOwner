@@ -24,3 +24,21 @@ $ ./start.sh
 
 应用即可启动运行：[localhost:3000](http://localhost:3000)
 
+
+
+##提取图片数子步骤
+
+1. 下载cuneiform或者tesseract-ocr ,这两个是提取器
+```
+sudo apt-get install tesseract-ocr cuneiform
+```
+
+2. 下载python图片处理类库
+```
+pip install Pillow
+```
+
+3. 下载python的ocr处理类库
+```
+pip install pyocr
+```
