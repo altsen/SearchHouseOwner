@@ -20,6 +20,15 @@ class Todo(Object):pass
 def index():
     return "hello"
 
+@app.route('/phone_num')
+def _index():
+    data = request.args.get("value")
+
+
+@app.route('/landload_id')
+def _index():
+    data = request.args.get("value")
+
 
 @app.route('/time')
 def time():
