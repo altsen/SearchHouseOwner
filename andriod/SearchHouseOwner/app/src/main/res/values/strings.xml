@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">SearchHouseOwner</string>
+    <string name="check">验</string>
+    <string name="phone_err">手机号码为空或错误,请重新输入</string>
+    <string name="call">联系房东</string>
+    <string name="really_owner">真房东</string>
+    <string name="not_really_owner">真中介</string>
 </resources>
