@@ -1,14 +1,11 @@
 # coding: utf-8
 
 from datetime import datetime
-
 from flask import Flask
 from leancloud import Object
 from leancloud import Query
 from leancloud import LeanCloudError
 from flask import request
-from flask import redirect
-from flask import url_for
 
 
 app = Flask(__name__)
@@ -20,14 +17,19 @@ class Todo(Object):pass
 def index():
     return "hello"
 
-@app.route('/phone_num')
-def _index():
-    data = request.args.get("value")
+'''http://192.168.13.57:3000/check_agent?value=电话号码'''
+@app.route('/check_agent')
+def _index1():
+    data = request.args.get("phone")
 
+    return data
 
-@app.route('/landload_id')
-def _index():
-    data = request.args.get("value")
+'''http://192.168.13.57:3000/house_info?value=房源的ID'''
+@app.route('/house_info')
+def _index2():
+    data = request.args.get("id")
+
+    return data
 
 
 @app.route('/time')
@@ -50,7 +52,5 @@ def show():
 
 @app.route('/app/add')
 def add():
-    content = request.form['content']
-    todo = Todo(content=content)
-    todo.save()
+    todo = Todo().set("hello",'hello').set('sex','man').set('age',123).save()
     return "ok"
