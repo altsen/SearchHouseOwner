@@ -2,6 +2,7 @@ package com.wiwide.searchhouseowner;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,16 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+import com.wiwide.common.CommonDefine;
+
+import org.apache.http.Header;
 
 /**
  * 检查是否为真房东的结果界面
@@ -31,12 +39,12 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
         Fresco.initialize(this);
         setContentView(R.layout.activity_result);
 
-        mResult = (TextView)findViewById(R.id.result);
-        mHouseList = (ListView)findViewById(R.id.house_list);
+        mResult = (TextView) findViewById(R.id.result);
+        mHouseList = (ListView) findViewById(R.id.house_list);
         mHouseAdpter = new HouseAdapter();
         mHouseList.setAdapter(mHouseAdpter);
         mHouseList.setOnItemClickListener(this);
-        mCall = (Button)findViewById(R.id.call);
+        mCall = (Button) findViewById(R.id.call);
         mCall.setOnClickListener(this);
     }
 
@@ -47,7 +55,33 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        final ViewHolder holder = (ViewHolder) view.getTag();
+        AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        RequestParams rp = new RequestParams();
+        rp.add("id", holder.mId);
+        asyncHttpClient.get(CommonDefine.SERVER + CommonDefine.HOUSE_INFO, rp, new TextHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                super.onStart();
+            }
 
+            @Override
+            public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+                Toast.makeText(ResultActivity.this, R.string.net_err, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(int i, Header[] headers, String s) {
+                Intent result = new Intent(ResultActivity.this, HouseActivity.class);
+                startActivity(result);
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+
+        });
     }
 
     class HouseAdapter extends BaseAdapter {
@@ -82,6 +116,7 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
     class ViewHolder {
         public SimpleDraweeView mImage;
         public TextView mHouse;
+        public String mId;
 
         public ViewHolder(View itemView) {
             mImage = (SimpleDraweeView) itemView.findViewById(R.id.image);

@@ -19,6 +19,7 @@ public class WelcomeActivity extends Activity {
             public void run() {
                 Intent main = new Intent(WelcomeActivity.this, MainActivity.class);
                 startActivity(main);
+                finish();
             }
         }, 1500);
     }

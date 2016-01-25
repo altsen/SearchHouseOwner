@@ -8,6 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
+import com.wiwide.common.CommonDefine;
+
+import org.apache.http.Header;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,9 +37,34 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        if (isPhoneOk(mPhone.getText().toString())) {
-            Intent result = new Intent(this, ResultActivity.class);
-            startActivity(result);
+        String phone = mPhone.getText().toString();
+        if (isPhoneOk(phone)) {
+            AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+            RequestParams rp = new RequestParams();
+            rp.add("phone", phone);
+            asyncHttpClient.get(CommonDefine.SERVER + CommonDefine.CHECK_AGENT, rp, new TextHttpResponseHandler() {
+                @Override
+                public void onStart() {
+                    super.onStart();
+                }
+
+                @Override
+                public void onFailure(int i, Header[] headers, String s, Throwable throwable) {
+                    Toast.makeText(MainActivity.this, R.string.net_err, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onSuccess(int i, Header[] headers, String s) {
+                    Intent result = new Intent(MainActivity.this, ResultActivity.class);
+                    startActivity(result);
+                }
+
+                @Override
+                public void onFinish() {
+                    super.onFinish();
+                }
+
+            });
         } else {
             Toast.makeText(this, R.string.phone_err, Toast.LENGTH_SHORT).show();
         }
