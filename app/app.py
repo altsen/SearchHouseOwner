@@ -15,7 +15,7 @@ class Todo(Object):pass
 
 @app.route('/')
 def index():
-    return "hello"
+    return "测试成功"
 
 '''http://192.168.13.57:3000/check_agent?value=电话号码'''
 @app.route('/check_agent')
@@ -49,8 +49,13 @@ def show():
             raise e
     return json.dumps([x.get('content') for x in todos])
 
-
 @app.route('/app/add')
 def add():
     todo = Todo().set("hello",'hello').set('sex','man').set('age',123).save()
     return "ok"
+
+
+class Todo(Object):
+
+    def __init__(self,**kwargs):
+        print kwargs
