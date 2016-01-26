@@ -1,42 +1,97 @@
 # coding: utf-8
 
 from datetime import datetime
+
+import pymongo
 from flask import Flask
 from leancloud import Object
 from leancloud import Query
 from leancloud import LeanCloudError
 from flask import request
 
-
 app = Flask(__name__)
+db = pymongo.MongoClient("mongodb://localhost:27017/spyder").spyder
 
-class Todo(Object):pass
+class Todo(Object): pass
 
 
 @app.route('/')
 def index():
-    return "测试成功"
+    return u"测试成功"
 
-'''http://192.168.13.57:3000/check_agent?value=电话号码'''
+
+'''http://192.168.13.57:3000/check_agent?phone=13691400786'''
+
+
 @app.route('/check_agent')
 def _index1():
-    data = request.args.get("phone")
+    phone = request.args.get("phone").strip()
+    b = Query(HouseInfo).equal_to('phone', phone).find()
 
-    return data
+    a = {x.get('xiaoqu').strip() for x in b}
+    if len(a) >= 2:
+        return json.dumps({'agent': 'yes',
+                           'data': [{'img': x.get('img'),
+                                     'xiaoqu': x.get('xiaoqu'),
+                                     'weizhi': x.get('weizhi'),
+                                     'phone': x.get('phone'),
+                                     'objectId': x.dump().get('objectId')
+                                     } for x in b]})
 
-'''http://192.168.13.57:3000/house_info?value=房源的ID'''
+    return json.dumps({'agent': 'no',
+                       'data': [{'img': x.get('img'),
+                                 'xiaoqu': x.get('xiaoqu'),
+                                 'weizhi': x.get('weizhi'),
+                                 'phone': x.get('phone'),
+                                 'objectId': x.dump().get('objectId')
+                                 } for x in b]})
+
+
+'''http://192.168.13.57:3000/house_info?id=56a6048ac4c9710053e7d6c6'''
+
+
 @app.route('/house_info')
 def _index2():
     data = request.args.get("id")
+    # a = Query(HouseInfo).equal_to('objectId',data).first()
+    # print a
+    return json.dumps(Query(HouseInfo).equal_to('objectId', data).first().dump())
 
-    return data
+
+@app.route('/all_phone')
+def _index4():
+    from collections import Counter
+
+    # from leancloud import Query
+    #
+    # result = Query.do_cloud_query('select phone from HouseInfo').results
+    # return Counter([x.get('phone') for x in db.test.find()])
+    # a = [x.get('phone').strip() for x in Query(HouseInfo).limit(1000).find()]
+    # return json.dumps(Counter(a))
+    # return 'ok'
+
+    return json.dumps(Counter([x.get('phone') for x in db.test.find()]))
 
 
 @app.route('/time')
 def time():
     return str(datetime.now())
 
-import json 
+
+import json
+
+
+class HouseInfo(Object): pass
+
+
+@app.route('/test')
+def _index3():
+    a = [x.dump() for x in Query(HouseInfo).equal_to('phone', '1830118****').find()]
+    return json.dumps(a)
+
+
+# json.dumps(Query(HouseInfo).limit(1).first().dump())
+# json.dumps(Query(HouseInfo).equal_to('phone', '1830118****').first().dump())
 
 @app.route('/app')
 def show():
@@ -49,13 +104,71 @@ def show():
             raise e
     return json.dumps([x.get('content') for x in todos])
 
+
 @app.route('/app/add')
 def add():
-    todo = Todo().set("hello",'hello').set('sex','man').set('age',123).save()
+    '''
+    for x in Query(Todo).not_equal_to('hello', 'hello').find():
+        x.set('hello','world')
+        x.save()
+    '''
+
+    from collections import Counter
+
+    a = {x.get('xiaoqu').strip() for x in Query(HouseInfo).equal_to('phone', '13810072091').find()}
+
+    if len(a) >= 2:
+        return
+
+
+
+        # for x in Query(HouseInfo).find():
+        #
+        #     print x.get('phone')
+
+        # if not x.get('source'):
+        #     x.destroy()
+
+    print "ooook"
+    # x.save()
+
+    # todo = Todo().set("hello", 'hello').set('sex', 'man').set('age', 123).save()
     return "ok"
 
 
-class Todo(Object):
+@app.route('/t')
+def _tt():
+    db = pymongo.MongoClient("mongodb://localhost:27017/spyder").spyder
 
-    def __init__(self,**kwargs):
-        print kwargs
+    b = [x for x in db.test.find()]
+
+    bbb = []
+
+    import random
+
+    # for x in b:
+    #     if x.get('phone')[-4:] == '****':
+    #         db.test.update({'_id': x.get("_id")},{'$set':{'phone':x.get('phone')[0:-4]+''.join([str(i) for i in random.sample([1,2,3,4,5,6,7,8,9,0],4)])}})
+
+    # for x in b:
+    #     if not x.get('objectId'):
+    #         db.test.remove({'_id': x.get("_id")})
+
+    # for x in b:
+    #     if not x.get('phone'):
+    #         db.test.remove({'_id': x.get("_id")})
+
+
+    # for x in b:
+    #     if x.get('objectId') in bbb:
+    #         db.test.remove({'_id': x.get("_id")})
+    #     else:
+    #         bbb.append(x.get('objectId'))
+
+    # for i in xrange(5):
+    #     a = Query(HouseInfo).limit(1000).skip(i * 1000).find()
+    #     if not a:
+    #         break
+    #     [db.test.insert(x.dump()) for x in a if x.dump().get('objectId') not in b]  # {'objectId':x.get('objectId')},
+
+    return 'ok'
