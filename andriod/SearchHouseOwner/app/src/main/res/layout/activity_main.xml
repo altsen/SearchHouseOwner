@@ -5,10 +5,22 @@
     android:background="#f2f2f2"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/mainColor"
+        android:gravity="center"
+        android:text="@string/app_name"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#ffffff" />
+
     <ImageView
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="214dp"
+        android:layout_below="@id/title"
         android:background="@drawable/header" />
 
     <Button

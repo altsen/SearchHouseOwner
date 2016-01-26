@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SearchHouseOwner</string>
+    <string name="app_name">验房东</string>
     <string name="check">验房东</string>
     <string name="tip">请输入手机号</string>
     <string name="phone_err">手机号码为空或错误,请重新输入</string>

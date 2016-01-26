@@ -22,6 +22,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.wiwide.common.CommonDefine;
+import com.wiwide.common.CommonUtil;
 import com.wiwide.data.HouseInfo;
 
 import org.apache.http.Header;
@@ -47,6 +48,9 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
         super.onCreate(savedInstanceState);
         Fresco.initialize(this);
         setContentView(R.layout.activity_result);
+
+        int mainColor = getResources().getColor(R.color.mainColor);
+        CommonUtil.setStatusBarColor(this, mainColor);
 
         initData(getIntent());
         mPhone = getIntent().getStringExtra(MainActivity.PHONE);

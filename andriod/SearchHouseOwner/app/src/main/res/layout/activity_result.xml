@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
-        android:background="#ec407a"
+        android:background="@color/mainColor"
         android:gravity="center"
         android:text="@string/really_owner"
         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -21,8 +21,8 @@
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
         android:layout_weight="1"
-        android:dividerHeight="1dp"
-        android:divider="#ec407a" />
+        android:divider="@color/mainColor"
+        android:dividerHeight="1dp" />
 
     <Button
         android:id="@+id/call"

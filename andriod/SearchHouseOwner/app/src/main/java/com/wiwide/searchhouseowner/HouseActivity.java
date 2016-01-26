@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.wiwide.common.CommonUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +25,8 @@ public class HouseActivity extends Activity {
         Fresco.initialize(this);
         setContentView(R.layout.activity_house);
 
+        int mainColor = getResources().getColor(R.color.mainColor);
+        CommonUtil.setStatusBarColor(this, mainColor);
 
         initData(getIntent());
     }

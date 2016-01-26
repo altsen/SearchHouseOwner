@@ -12,6 +12,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.wiwide.common.CommonDefine;
+import com.wiwide.common.CommonUtil;
 
 import org.apache.http.Header;
 
@@ -31,6 +32,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        int mainColor = getResources().getColor(R.color.mainColor);
+        CommonUtil.setStatusBarColor(this, mainColor);
+
         mPhone = (EditText) findViewById(R.id.phone);
         findViewById(R.id.check).setOnClickListener(this);
     }
