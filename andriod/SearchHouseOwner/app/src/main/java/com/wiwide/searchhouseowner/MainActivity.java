@@ -79,7 +79,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private boolean isPhoneOk(String phone) {
-        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9])|(17[0,5-9]))\\d{8}$");
+        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,2-9])|(17[0,5-9]))\\d{8}$");
         Matcher m = p.matcher(phone);
         return m.matches();
     }
