@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,16 +51,19 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
         initData(getIntent());
         mPhone = getIntent().getStringExtra(MainActivity.PHONE);
         TextView result = (TextView) findViewById(R.id.result);
+        Button call = (Button) findViewById(R.id.call);
+        call.setOnClickListener(this);
         if (mIsOwner) {
             result.setText(R.string.really_owner);
+            call.setText(R.string.call_owner);
         } else {
-            result.setText(R.string.not_really_owner);
+            result.setText(R.string.really_agent);
+            call.setText(R.string.call_agent);
         }
         mHouseList = (ListView) findViewById(R.id.house_list);
         HouseAdapter houseAdapter = new HouseAdapter();
         mHouseList.setAdapter(houseAdapter);
         mHouseList.setOnItemClickListener(this);
-        findViewById(R.id.call).setOnClickListener(this);
     }
 
     private void initData(Intent intent) {
@@ -151,6 +155,8 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
             Uri uri = Uri.parse(houseInfo.mImage);
             holder.mImage.setImageURI(uri);
             holder.mId = houseInfo.mId;
+            String price = "¥ " + houseInfo.mPrice;
+            holder.mPrice.setText(price);
             return convertView;
         }
     }
@@ -158,11 +164,13 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
     class ViewHolder {
         public SimpleDraweeView mImage;
         public TextView mHouse;
+        public TextView mPrice;
         public String mId;
 
         public ViewHolder(View itemView) {
             mImage = (SimpleDraweeView) itemView.findViewById(R.id.image);
             mHouse = (TextView) itemView.findViewById(R.id.house);
+            mPrice = (TextView) itemView.findViewById(R.id.price);
         }
     }
 }

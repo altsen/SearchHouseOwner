@@ -6,23 +6,32 @@
 
     <TextView
         android:id="@+id/result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
+        android:background="#ec407a"
+        android:gravity="center"
         android:text="@string/really_owner"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#ffffff" />
 
     <ListView
         android:id="@+id/house_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:dividerHeight="1dp"
+        android:divider="#ec407a" />
 
     <Button
         android:id="@+id/call"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
-        android:text="@string/call" />
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/call"
+        android:text="@string/call_owner"
+        android:textColor="#ffffff" />
 </LinearLayout>

@@ -11,6 +11,7 @@ public class HouseInfo {
     public String mCourt;
     public String mImage;
     public String mPhone;
+    public String mPrice;
 
     public HouseInfo(JSONObject info) {
         mId = info.optString("objectId");
@@ -18,5 +19,6 @@ public class HouseInfo {
         mCourt = info.optString("xiaoqu");
         mImage = info.optString("img");
         mPhone = info.optString("phone");
+        mPrice = info.optString("price");
     }
 }
