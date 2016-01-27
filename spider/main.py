@@ -4,19 +4,22 @@ import requests
 import bs4
 import codecs
 import sqlite3
-import leancloud
-from leancloud import Object
-from leancloud import Query
+try:
+    import leancloud
+    from leancloud import Object
+    from leancloud import Query
 
 
-leancloud.init('aIvRjO9nNktIWXYTORzbIoQS-gzGzoHsz', 'XedakwWQtCVo5ADjvdHm3gw6')
+    leancloud.init('aIvRjO9nNktIWXYTORzbIoQS-gzGzoHsz', 'XedakwWQtCVo5ADjvdHm3gw6')
 
-class HouseInfo(leancloud.Object):
-    def __init__(self, **kwargs):
-        super(HouseInfo, self).__init__()
-        for k, v in kwargs.items():
-            self.set(k, v)
-query = Query(HouseInfo)
+    class HouseInfo(leancloud.Object):
+        def __init__(self, **kwargs):
+            super(HouseInfo, self).__init__()
+            for k, v in kwargs.items():
+                self.set(k, v)
+    query = Query(HouseInfo)
+except ImportError:
+    pass
 
 def ganji_get_house_list(district):
     result = []
