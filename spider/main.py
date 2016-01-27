@@ -21,10 +21,10 @@ try:
 except ImportError:
     pass
 
-def ganji_get_house_list(district):
+def ganji_get_house_list(district, pages=1):
     result = []
-    for i in range(1, 200):
-        r = requests.get("http://bj.ganji.com/fang1/"+district+"/o%d"%i)
+    for i in range(1, pages+1):
+        r = requests.get("http://bj.ganji.com/fang1/"+district+"/a1o%d"%i)
         result = re.findall("/fang./[^.]*\.htm", r.text)
         for s in result:
             yield "http://bj.ganji.com"+s
@@ -59,7 +59,7 @@ def ganji_get_house_page(url):
         return result
 
     except Exception as e:
-        print e
+        print(e)
         return None
 
 def wuba_get_house_list(district):
@@ -104,7 +104,7 @@ def wuba_get_house_page(url):
             result[k] = re.sub(r"(\n|\t|\r| |\xa0)", "", v)
         return result
     except Exception as e:
-        print e
+        print(e)
         return None
 
 def save_to_leancloud(d):
@@ -115,7 +115,7 @@ def run():
     #pages = ganji_get_house_list("chaoyang")
     pages = wuba_get_house_list("chaoyang")
     for p in pages:
-        print p
+        print(p)
         query.equal_to('source', p)
         if not query.find():
             r = wuba_get_house_page(p)
@@ -123,16 +123,17 @@ def run():
 
 def test():
     with codecs.open("output.txt", "w", "utf-8") as f:
-        pages = wuba_get_house_list("chaoyang")
+        pages = ganji_get_house_list("chaoyang")
         for p in pages:
+            print(p)
             f.write("-"*50+"\n")
-            r = wuba_get_house_page(p)
-            if not r: print p
+            r = ganji_get_house_page(p)
+            if not r: print(p)
             if r:
                 for k, v in r.items():
                     f.write(k+"|"+v+"\n")
 
 if __name__ == "__main__":
-    run()
+    #run()
     #r = wuba_get_house_list("chaoyang")
-    #test()
+    test()
