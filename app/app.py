@@ -12,6 +12,7 @@ from flask import request
 app = Flask(__name__)
 db = pymongo.MongoClient("mongodb://localhost:27017/spyder").spyder
 
+
 class Todo(Object): pass
 
 
@@ -24,6 +25,37 @@ def index():
 
 
 @app.route('/check_agent')
+def _indexc():
+    phone = request.args.get("phone").strip()
+    phone = list(db.test.find({'phone': phone}))
+    a = {x.get('xiaoqu').strip() for x in phone}
+
+    if not phone:
+        return json.dumps({'agent': 'no', 'data': []})
+
+    print phone[-1].get('owner'), '\n\n'
+
+    if len(a) >= 2 or u'经纪人' in phone[-1].get('owner'):
+        return json.dumps({'agent': 'yes',
+                           'data': [{'img': x.get('img'),
+                                     'xiaoqu': x.get('xiaoqu'),
+                                     'weizhi': x.get('weizhi'),
+                                     'phone': x.get('phone'),
+                                     'objectId': x.get('objectId'),
+                                     'price': x.get('price')
+                                     } for x in phone]})
+
+    return json.dumps({'agent': 'no',
+                       'data': [{'img': x.get('img'),
+                                 'xiaoqu': x.get('xiaoqu'),
+                                 'weizhi': x.get('weizhi'),
+                                 'phone': x.get('phone'),
+                                 'objectId': x.get('objectId'),
+                                 'price': x.get('price')
+                                 } for x in phone]})
+
+
+@app.route('/check')
 def _index1():
     phone = request.args.get("phone").strip()
     b = Query(HouseInfo).equal_to('phone', phone).find()
@@ -50,12 +82,20 @@ def _index1():
 '''http://192.168.13.57:3000/house_info?id=56a6048ac4c9710053e7d6c6'''
 
 
-@app.route('/house_info')
+@app.route('/house_info1')
 def _index2():
     data = request.args.get("id")
-    # a = Query(HouseInfo).equal_to('objectId',data).first()
-    # print a
     return json.dumps(Query(HouseInfo).equal_to('objectId', data).first().dump())
+
+
+@app.route('/house_info')
+def ind():
+    data = request.args.get("id")
+
+    a = db.test.find_one({'objectId': data})
+    a.pop('_id')
+
+    return json.dumps(a)
 
 
 @app.route('/all_phone')
@@ -92,6 +132,15 @@ def _index3():
 
 # json.dumps(Query(HouseInfo).limit(1).first().dump())
 # json.dumps(Query(HouseInfo).equal_to('phone', '1830118****').first().dump())
+
+
+@app.route('/img', methods=['POST'])
+def _oo():
+    a = request.files.get('img')
+    a.save('./static/{}'.format(a.filename))
+
+    return 'http://192.168.13.57:3000/static/{}'.format(a.filename)
+
 
 @app.route('/app')
 def show():
@@ -155,15 +204,16 @@ def _tt():
     #         db.test.remove({'_id': x.get("_id")})
 
     # for x in b:
-    #     if not x.get('phone'):
-    #         db.test.remove({'_id': x.get("_id")})
+    # print {'key':x.get('phone')+x.get('owner')+x.get('huxing')+x.get('louceng')}
+    # if x.get('phone') :
+    # db.test.update({'_id': x.get("_id")},{'$set':{'key':x.get('phone')+x.get('owner')+x.get('huxing')+x.get('louceng')}})
 
 
     # for x in b:
-    #     if x.get('objectId') in bbb:
+    #     if x.get('key') in bbb:
     #         db.test.remove({'_id': x.get("_id")})
     #     else:
-    #         bbb.append(x.get('objectId'))
+    #         bbb.append(x.get('key'))
 
     # for i in xrange(5):
     #     a = Query(HouseInfo).limit(1000).skip(i * 1000).find()
