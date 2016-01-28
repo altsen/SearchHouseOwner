@@ -1,9 +1,23 @@
 <resources>
-    <string name="app_name">SearchHouseOwner</string>
-    <string name="check">验</string>
+    <string name="app_name">房东直租</string>
+    <string name="check">验房东</string>
+    <string name="tip">请输入手机号</string>
     <string name="phone_err">手机号码为空或错误,请重新输入</string>
     <string name="net_err">网络问题,请稍后再试</string>
-    <string name="call">联系房东</string>
-    <string name="really_owner">真房东</string>
-    <string name="not_really_owner">真中介</string>
+    <string name="really_owner">该号码为房东</string>
+    <string name="really_agent">该号码为中介</string>
+    <string name="call_owner">联系房东</string>
+    <string name="call_agent">联系中介</string>
+    <string name="have_no_data">没有该电话号码信息</string>
+    <string name="part">合租</string>
+    <string name="all">整租</string>
+    <string name="owner">房东</string>
+
+    <string name="location">位置：</string>
+    <string name="court">小区：</string>
+    <string name="price">价格：</string>
+    <string name="owner_tip">房东：</string>
+    <string name="details">详情：</string>
+
+    <string name="house_details">房源详情</string>
 </resources>

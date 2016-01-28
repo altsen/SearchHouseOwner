@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
+
+import com.wiwide.common.CommonUtil;
 
 public class WelcomeActivity extends Activity {
 
@@ -13,6 +13,9 @@ public class WelcomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+
+        int mainColor = getResources().getColor(R.color.welcomeColor);
+        CommonUtil.setStatusBarColor(this, mainColor);
 
         new Handler().postDelayed(new Runnable() {
             @Override
