@@ -2,7 +2,6 @@
 
 from datetime import datetime
 
-import pymongo
 from flask import Flask
 from leancloud import Object
 from leancloud import Query
@@ -10,10 +9,8 @@ from leancloud import LeanCloudError
 from flask import request
 
 app = Flask(__name__)
-db = pymongo.MongoClient("mongodb://localhost:27017/spyder").spyder
 
-
-class Todo(Object): pass
+HouseInfo = Query(Object.extend('HouseInfo'))
 
 
 @app.route('/')
@@ -24,10 +21,12 @@ def index():
 '''http://192.168.13.57:3000/check_agent?phone=13691400786'''
 
 
-@app.route('/check_agent')
+@app.route('/check')
 def _indexc():
     phone = request.args.get("phone").strip()
-    phone = list(db.test.find({'phone': phone}))
+
+    phone = Query(HouseInfo).equal_to('phone', phone).find()
+
     a = {x.get('xiaoqu').strip() for x in phone}
 
     if not phone:
@@ -55,7 +54,7 @@ def _indexc():
                                  } for x in phone]})
 
 
-@app.route('/check')
+@app.route('/check_agent')
 def _index1():
     phone = request.args.get("phone").strip()
     b = Query(HouseInfo).equal_to('phone', phone).find()
@@ -67,6 +66,7 @@ def _index1():
                                      'xiaoqu': x.get('xiaoqu'),
                                      'weizhi': x.get('weizhi'),
                                      'phone': x.get('phone'),
+                                     'price': x.get('price'),
                                      'objectId': x.dump().get('objectId')
                                      } for x in b]})
 
@@ -75,6 +75,7 @@ def _index1():
                                  'xiaoqu': x.get('xiaoqu'),
                                  'weizhi': x.get('weizhi'),
                                  'phone': x.get('phone'),
+                                 'price': x.get('price'),
                                  'objectId': x.dump().get('objectId')
                                  } for x in b]})
 
@@ -82,35 +83,39 @@ def _index1():
 '''http://192.168.13.57:3000/house_info?id=56a6048ac4c9710053e7d6c6'''
 
 
-@app.route('/house_info1')
+@app.route('/house_info')
 def _index2():
     data = request.args.get("id")
     return json.dumps(Query(HouseInfo).equal_to('objectId', data).first().dump())
 
 
-@app.route('/house_info')
+@app.route('/house_info1')
 def ind():
     data = request.args.get("id")
 
-    a = db.test.find_one({'objectId': data})
-    a.pop('_id')
+    # if not data:
+    #     return
+    house_info = Query(HouseInfo)
+    house_info.equal_to('objectId', data)
+    house_info = house_info.find()
+    house_info.pop('_id')
 
-    return json.dumps(a)
+    return json.dumps(house_info)
 
 
-@app.route('/all_phone')
-def _index4():
-    from collections import Counter
+# @app.route('/all_phone')
+# def _index4():
+#     from collections import Counter
+#
+#     # from leancloud import Query
+#     #
+#     # result = Query.do_cloud_query('select phone from HouseInfo').results
+#     # return Counter([x.get('phone') for x in db.test.find()])
+#     # a = [x.get('phone').strip() for x in Query(HouseInfo).limit(1000).find()]
+#     # return json.dumps(Counter(a))
+#     # return 'ok'
 
-    # from leancloud import Query
-    #
-    # result = Query.do_cloud_query('select phone from HouseInfo').results
-    # return Counter([x.get('phone') for x in db.test.find()])
-    # a = [x.get('phone').strip() for x in Query(HouseInfo).limit(1000).find()]
-    # return json.dumps(Counter(a))
-    # return 'ok'
-
-    return json.dumps(Counter([x.get('phone') for x in db.test.find()]))
+# return json.dumps(Counter([x.get('phone') for x in db.test.find()]))
 
 
 @app.route('/time')
@@ -142,16 +147,16 @@ def _oo():
     return 'http://192.168.13.57:3000/static/{}'.format(a.filename)
 
 
-@app.route('/app')
-def show():
-    try:
-        todos = Query(Todo).descending('createdAt').find()
-    except LeanCloudError, e:
-        if e.code == 101:  # 服务端对应的 Class 还没创建
-            todos = []
-        else:
-            raise e
-    return json.dumps([x.get('content') for x in todos])
+# @app.route('/app')
+# def show():
+#     try:
+#         todos = Query(Todo).descending('createdAt').find()
+#     except LeanCloudError, e:
+#         if e.code == 101:  # 服务端对应的 Class 还没创建
+#             todos = []
+#         else:
+#             raise e
+#     return json.dumps([x.get('content') for x in todos])
 
 
 @app.route('/app/add')
@@ -184,41 +189,40 @@ def add():
     # todo = Todo().set("hello", 'hello').set('sex', 'man').set('age', 123).save()
     return "ok"
 
+# @app.route('/t')
+# def _tt():
+#     db = pymongo.MongoClient("mongodb://localhost:27017/spyder").spyder
+#
+#     b = [x for x in db.test.find()]
+#
+#     bbb = []
+#
+#     import random
 
-@app.route('/t')
-def _tt():
-    db = pymongo.MongoClient("mongodb://localhost:27017/spyder").spyder
+# for x in b:
+#     if x.get('phone')[-4:] == '****':
+#         db.test.update({'_id': x.get("_id")},{'$set':{'phone':x.get('phone')[0:-4]+''.join([str(i) for i in random.sample([1,2,3,4,5,6,7,8,9,0],4)])}})
 
-    b = [x for x in db.test.find()]
+# for x in b:
+#     if not x.get('objectId'):
+#         db.test.remove({'_id': x.get("_id")})
 
-    bbb = []
-
-    import random
-
-    # for x in b:
-    #     if x.get('phone')[-4:] == '****':
-    #         db.test.update({'_id': x.get("_id")},{'$set':{'phone':x.get('phone')[0:-4]+''.join([str(i) for i in random.sample([1,2,3,4,5,6,7,8,9,0],4)])}})
-
-    # for x in b:
-    #     if not x.get('objectId'):
-    #         db.test.remove({'_id': x.get("_id")})
-
-    # for x in b:
-    # print {'key':x.get('phone')+x.get('owner')+x.get('huxing')+x.get('louceng')}
-    # if x.get('phone') :
-    # db.test.update({'_id': x.get("_id")},{'$set':{'key':x.get('phone')+x.get('owner')+x.get('huxing')+x.get('louceng')}})
+# for x in b:
+# print {'key':x.get('phone')+x.get('owner')+x.get('huxing')+x.get('louceng')}
+# if x.get('phone') :
+# db.test.update({'_id': x.get("_id")},{'$set':{'key':x.get('phone')+x.get('owner')+x.get('huxing')+x.get('louceng')}})
 
 
-    # for x in b:
-    #     if x.get('key') in bbb:
-    #         db.test.remove({'_id': x.get("_id")})
-    #     else:
-    #         bbb.append(x.get('key'))
+# for x in b:
+#     if x.get('key') in bbb:
+#         db.test.remove({'_id': x.get("_id")})
+#     else:
+#         bbb.append(x.get('key'))
 
-    # for i in xrange(5):
-    #     a = Query(HouseInfo).limit(1000).skip(i * 1000).find()
-    #     if not a:
-    #         break
-    #     [db.test.insert(x.dump()) for x in a if x.dump().get('objectId') not in b]  # {'objectId':x.get('objectId')},
+# for i in xrange(5):
+#     a = Query(HouseInfo).limit(1000).skip(i * 1000).find()
+#     if not a:
+#         break
+#     [db.test.insert(x.dump()) for x in a if x.dump().get('objectId') not in b]  # {'objectId':x.get('objectId')},
 
-    return 'ok'
+# return 'ok'
