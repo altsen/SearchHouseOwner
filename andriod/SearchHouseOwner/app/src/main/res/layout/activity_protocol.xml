@@ -11,7 +11,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@color/mainColor"
         android:gravity="center"
-        android:text="@string/protocol"
+        android:text="@string/protocol_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#ffffff" />
 
@@ -21,7 +21,7 @@
         android:layout_marginBottom="12dp"
         android:layout_marginTop="24dp"
         android:layout_weight="1"
-        android:text="@string/part"
+        android:text="@string/protocol"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#959595" />
 

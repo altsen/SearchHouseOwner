@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">房东直租</string>
-    <string name="protocol">免责声明</string>
+    <string name="protocol_title">免责声明</string>
+    <string name="protocol">\t\t\t\t请认真阅读本声明，用户使用本平台进行查询房源、联系房东、租赁房屋等一切行为将被视为对本声明全部内容的认可。\n
+        \t\t\t\t1、本平台所提供的房源、房东、中介等信息均来自网络数据及数据分析，如有问题，本APP不承担任何有关责任。\n
+        \t\t\t\t2、本APP仅支持部分地区的房源核查。\n
+        \t\t\t\t3、用户明确并同意使用本APP及其网络服务所存在的风险完全有其本人承担，因其使用本APP及其网络服务而产生的一切后果也由其本人承担，本APP对此不承担任何责任。</string>
     <string name="check">验房东</string>
     <string name="tip">请输入手机号</string>
     <string name="phone_err">手机号码为空或错误,请重新输入</string>
