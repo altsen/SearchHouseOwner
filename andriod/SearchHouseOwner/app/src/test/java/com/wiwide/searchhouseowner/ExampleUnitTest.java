@@ -1,4 +1,4 @@
-package com.wiwide.searchhouseowner;
+package com.fdzz.searchhouseowner;
 
 import org.junit.Test;
 

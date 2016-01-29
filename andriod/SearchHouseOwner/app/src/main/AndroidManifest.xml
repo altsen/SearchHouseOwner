@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wiwide.searchhouseowner">
+    package="com.fdzz.searchhouseowner">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:allowBackup="true"
@@ -12,8 +15,7 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".WelcomeActivity">
+        <activity android:name="com.fdzz.searchhouseowner.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,16 +23,27 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.fdzz.searchhouseowner.MainActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ResultActivity"
+            android:name="com.fdzz.searchhouseowner.ResultActivity"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".HouseActivity"
+            android:name="com.fdzz.searchhouseowner.HouseActivity"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.fdzz.searchhouseowner.ProtocolActivity"
             android:screenOrientation="portrait" />
     </application>
+
+    <meta-data
+        android:name="UMENG_APPKEY"
+        android:value="56aaee33e0f55ae9100025a9" />
+    <meta-data
+        android:name="UMENG_CHANNEL"
+        android:value="Channel ID" />
 
 </manifest>

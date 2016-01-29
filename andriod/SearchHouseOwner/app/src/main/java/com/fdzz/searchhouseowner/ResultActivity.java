@@ -1,14 +1,16 @@
-package com.wiwide.searchhouseowner;
+package com.fdzz.searchhouseowner;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -18,12 +20,12 @@ import android.widget.Toast;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.fdzz.common.CommonDefine;
+import com.fdzz.common.CommonUtil;
+import com.fdzz.data.HouseInfo;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
-import com.wiwide.common.CommonDefine;
-import com.wiwide.common.CommonUtil;
-import com.wiwide.data.HouseInfo;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -37,10 +39,12 @@ import java.util.List;
  * 检查是否为真房东的结果界面
  * Created by yueguang on 16-1-25.
  */
-public class ResultActivity extends Activity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class ResultActivity extends BaseActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private ListView mHouseList;
     private String mPhone;
     private boolean mIsOwner;
+    private WebView mWebView;
+    private String mTipUrl;
     private List<HouseInfo> mHouseInfoList;
 
     @Override
@@ -58,16 +62,48 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
         Button call = (Button) findViewById(R.id.call);
         call.setOnClickListener(this);
         if (mIsOwner) {
-            result.setText(R.string.really_owner);
-            call.setText(R.string.call_owner);
+            if (mHouseInfoList.size() > 0) {
+                result.setText(R.string.really_owner);
+                call.setText(R.string.call_owner);
+                showList();
+            } else {
+                result.setText(R.string.no_data);
+                call.setText(R.string.call_no_data);
+                showTip();
+            }
         } else {
             result.setText(R.string.really_agent);
             call.setText(R.string.call_agent);
+            showList();
         }
+    }
+
+    private void showList() {
         mHouseList = (ListView) findViewById(R.id.house_list);
         HouseAdapter houseAdapter = new HouseAdapter();
         mHouseList.setAdapter(houseAdapter);
         mHouseList.setOnItemClickListener(this);
+    }
+
+    private void showTip() {
+        mWebView = (WebView) findViewById(R.id.tip);
+        mWebView.loadUrl(mTipUrl);
+        mWebView.setVisibility(View.VISIBLE);
+        mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                showProgressDialog();
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                dismissProgressDialog();
+            }
+        });
+        mHouseList = (ListView) findViewById(R.id.house_list);
+        mHouseList.setVisibility(View.GONE);
     }
 
     private void initData(Intent intent) {
@@ -83,6 +119,10 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
             for (int i = 0; i < houseInfo.length(); i++) {
                 mHouseInfoList.add(new HouseInfo(houseInfo.getJSONObject(i)));
             }
+
+            if (mHouseInfoList.size() == 0) {
+                mTipUrl = info.optString("url");
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -96,6 +136,7 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        showProgressDialog();
         final ViewHolder holder = (ViewHolder) view.getTag();
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
         RequestParams rp = new RequestParams();
@@ -123,6 +164,7 @@ public class ResultActivity extends Activity implements View.OnClickListener, Ad
             @Override
             public void onFinish() {
                 super.onFinish();
+                dismissProgressDialog();
             }
 
         });
