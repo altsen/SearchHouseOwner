@@ -1,4 +1,4 @@
-package com.wiwide.common;
+package com.fdzz.common;
 
 import android.app.Activity;
 import android.graphics.Color;

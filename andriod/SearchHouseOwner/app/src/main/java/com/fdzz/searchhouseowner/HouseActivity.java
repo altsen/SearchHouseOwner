@@ -1,6 +1,5 @@
-package com.wiwide.searchhouseowner;
+package com.fdzz.searchhouseowner;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,7 +7,7 @@ import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.wiwide.common.CommonUtil;
+import com.fdzz.common.CommonUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +16,7 @@ import org.json.JSONObject;
  * 房源信息的展示界面
  * Created by yueguang on 16-1-25.
  */
-public class HouseActivity extends Activity {
+public class HouseActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

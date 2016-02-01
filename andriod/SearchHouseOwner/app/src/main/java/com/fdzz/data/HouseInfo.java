@@ -1,4 +1,4 @@
-package com.wiwide.data;
+package com.fdzz.data;
 
 import org.json.JSONObject;
 

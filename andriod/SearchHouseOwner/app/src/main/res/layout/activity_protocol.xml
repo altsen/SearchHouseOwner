@@ -5,40 +5,34 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/result"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
         android:background="@color/mainColor"
         android:gravity="center"
-        android:text="@string/really_owner"
+        android:text="@string/protocol_title"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#ffffff" />
 
-    <ListView
-        android:id="@+id/house_list"
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="24dp"
         android:layout_weight="1"
-        android:divider="@color/mainColor"
-        android:dividerHeight="1dp"/>
-
-    <WebView
-        android:id="@+id/tip"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone"/>
+        android:text="@string/protocol"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#959595" />
 
     <Button
-        android:id="@+id/call"
+        android:id="@+id/ok"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="12dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/call"
-        android:text="@string/call_owner"
+        android:background="@drawable/button"
+        android:text="@string/ok"
         android:textColor="#ffffff" />
+
 </LinearLayout>
